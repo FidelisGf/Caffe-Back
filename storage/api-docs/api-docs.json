@@ -1,0 +1,52 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/produto": {
+            "post": {
+                "summary": "Register product",
+                "operationId": "73bcc3657cbe10926157df2b636084ad",
+                "parameters": [
+                    {
+                        "name": "Nome_produto",
+                        "in": "query",
+                        "description": "Nome_produto",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Preco_compra",
+                        "in": "query",
+                        "description": "preco compra",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Preco_venda",
+                        "in": "query",
+                        "description": "preco venda",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Produto criado"
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    }
+                }
+            }
+        }
+    }
+}
