@@ -50,7 +50,7 @@ class ProdutoController extends Controller
             $current_page = $request->input('page', 1);
             $produtos = Produto::paginate(40, ['*'], 'page', $current_page)
                 ->toArray();
-            return response()->json(['data' => $produtos], 200);
+            return response()->json($produtos, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
