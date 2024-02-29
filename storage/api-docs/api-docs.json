@@ -1,49 +1,678 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "My First API",
+        "title": "Caffe-Backend",
         "version": "0.1"
     },
     "paths": {
-        "/api/produto": {
-            "post": {
-                "summary": "Register product",
-                "operationId": "73bcc3657cbe10926157df2b636084ad",
+        "/api/entrada-produto": {
+            "get": {
+                "tags": [
+                    "Entrada de Produto"
+                ],
+                "summary": "Listar entradas de produtos",
+                "operationId": "0fcfca1b8f09c2c0f8f2e4653e1e0c82",
                 "parameters": [
                     {
-                        "name": "Nome_produto",
+                        "name": "idProduto",
                         "in": "query",
-                        "description": "Nome_produto",
+                        "description": "ID do produto",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "Preco_compra",
-                        "in": "query",
-                        "description": "preco compra",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "Preco_venda",
-                        "in": "query",
-                        "description": "preco venda",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "Retorna a lista de entradas de produtos"
+                    },
+                    "400": {
+                        "description": "Erro ao buscar entrada de produtos"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Entrada de Produto"
+                ],
+                "summary": "Registrar entrada de produto",
+                "operationId": "3da8d2c60f20b4bdbea5d7220060cb54",
+                "requestBody": {
+                    "description": "Informações da entrada de produto",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "idProduto",
+                                    "Quantidade",
+                                    "Preco",
+                                    "Data",
+                                    "Validade",
+                                    "Informacoes_adicionais"
+                                ],
+                                "properties": {
+                                    "idProduto": {
+                                        "type": "integer"
+                                    },
+                                    "Quantidade": {
+                                        "type": "integer"
+                                    },
+                                    "Preco": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Data": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "Validade": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "Informacoes_adicionais": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
                     "201": {
-                        "description": "Produto criado"
+                        "description": "Entrada de produto cadastrada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro ao cadastrar entrada de produto"
+                    }
+                }
+            }
+        },
+        "/api/entrada-produto/{id}": {
+            "get": {
+                "tags": [
+                    "Entrada de Produto"
+                ],
+                "summary": "Mostrar detalhes da entrada de produto",
+                "operationId": "cda5a4778fb59aabb77a49d60dd01904",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da entrada de produto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna os detalhes da entrada de produto"
+                    },
+                    "400": {
+                        "description": "Erro ao buscar entrada de produto"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Entrada de Produto"
+                ],
+                "summary": "Atualizar entrada de produto",
+                "operationId": "ad8bb0b99a87cbbfc0a4beeac1137308",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da entrada de produto a ser atualizada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Informações da entrada de produto a serem atualizadas",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "idProduto": {
+                                        "type": "integer"
+                                    },
+                                    "Quantidade": {
+                                        "type": "integer"
+                                    },
+                                    "Preco": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Data": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "Validade": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "Informacoes_adicionais": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Entrada de produto atualizada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro ao atualizar entrada de produto"
+                    }
+                }
+            }
+        },
+        "/api/itens-mesa": {
+            "get": {
+                "tags": [
+                    "Itens da Mesa"
+                ],
+                "summary": "Listar itens da mesa",
+                "operationId": "d95cc60d7c93f9a942f33ade5384c78d",
+                "parameters": [
+                    {
+                        "name": "idMesa",
+                        "in": "query",
+                        "description": "ID da mesa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de itens da mesa"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Itens da Mesa"
+                ],
+                "summary": "Adicionar item à mesa",
+                "operationId": "3fad498df8be3051fad392e110eb1d10",
+                "requestBody": {
+                    "description": "Informações do novo item da mesa",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "idMesa",
+                                    "Quantidade",
+                                    "Total_soma",
+                                    "idProduto"
+                                ],
+                                "properties": {
+                                    "idMesa": {
+                                        "type": "integer"
+                                    },
+                                    "Quantidade": {
+                                        "type": "integer"
+                                    },
+                                    "Total_soma": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "idProduto": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Item da mesa adicionado com sucesso"
                     },
                     "422": {
-                        "description": "Validation errors"
+                        "description": "Erros de validação"
+                    }
+                }
+            }
+        },
+        "/api/itens-mesa/{id}": {
+            "put": {
+                "tags": [
+                    "Itens da Mesa"
+                ],
+                "summary": "Atualizar item da mesa",
+                "operationId": "f89f5929c1bd1415b5dcb2f9f8cab448",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do item da mesa a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Informações do item da mesa a serem atualizadas",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "idMesa": {
+                                        "type": "integer"
+                                    },
+                                    "Quantidade": {
+                                        "type": "integer"
+                                    },
+                                    "Total_soma": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "idProduto": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Item da mesa atualizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Item da mesa não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/mesas": {
+            "get": {
+                "tags": [
+                    "Mesas"
+                ],
+                "summary": "Listar mesas",
+                "operationId": "5bd7c941a94d9c293b50cbf1877cbf4d",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página (opcional)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de mesas"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Mesas"
+                ],
+                "summary": "Adicionar mesa",
+                "operationId": "53d4743d0c3ba89ee2f5ecb95b775927",
+                "requestBody": {
+                    "description": "Informações da nova mesa",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "Status_mesa",
+                                    "Preco_total",
+                                    "Numero_mesa",
+                                    "Tipo_pagamento"
+                                ],
+                                "properties": {
+                                    "Status_mesa": {
+                                        "type": "boolean"
+                                    },
+                                    "Preco_total": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Numero_mesa": {
+                                        "type": "integer"
+                                    },
+                                    "Tipo_pagamento": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Mesa adicionada com sucesso"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/mesas/{id}": {
+            "get": {
+                "tags": [
+                    "Mesas"
+                ],
+                "summary": "Mostrar detalhes da mesa",
+                "operationId": "e1a4805b4bc8fdc565a149d7d91d78e8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da mesa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna os detalhes da mesa"
+                    },
+                    "404": {
+                        "description": "Mesa não encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Mesas"
+                ],
+                "summary": "Atualizar mesa",
+                "operationId": "b1fc5e1d7e4dcd89d09cb24235b3cf07",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da mesa a ser atualizada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Informações da mesa a serem atualizadas",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "Status_mesa": {
+                                        "type": "boolean"
+                                    },
+                                    "Preco_total": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Numero_mesa": {
+                                        "type": "integer"
+                                    },
+                                    "Tipo_pagamento": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mesa atualizada com sucesso"
+                    },
+                    "404": {
+                        "description": "Mesa não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/mesas/{id}/abrir-fechar": {
+            "put": {
+                "tags": [
+                    "Mesas"
+                ],
+                "summary": "Abrir ou fechar mesa",
+                "operationId": "95e400f7f1ffc196ce954c851b4ddeed",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da mesa a ser aberta ou fechada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Status da mesa",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "Status_mesa": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Status da mesa atualizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Mesa não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/produtos": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Listar produtos",
+                "operationId": "cab8aec265fc5e5ab4a1d09399ead918",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página (opcional)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna a lista de produtos"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Adicionar produto",
+                "operationId": "4ebb3451d106364b9fd624ac3d4265ab",
+                "requestBody": {
+                    "description": "Informações do novo produto",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "Nome_produto",
+                                    "Preco_compra",
+                                    "Preco_venda",
+                                    "Descricao"
+                                ],
+                                "properties": {
+                                    "Nome_produto": {
+                                        "type": "string"
+                                    },
+                                    "Preco_compra": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Preco_venda": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Descricao": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Produto adicionado com sucesso"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/produtos/{id}": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Mostrar detalhes do produto",
+                "operationId": "160123aa3766f9eb53e8131219d24ae5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna os detalhes do produto"
+                    },
+                    "404": {
+                        "description": "Produto não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Atualizar produto",
+                "operationId": "41d748c0b2810d1c7d818f8928cf1441",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do produto a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Informações do produto a serem atualizadas",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "Nome_produto": {
+                                        "type": "string"
+                                    },
+                                    "Preco_compra": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Preco_venda": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "Descricao": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Produto atualizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Produto não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
                     }
                 }
             }

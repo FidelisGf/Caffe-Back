@@ -13,7 +13,14 @@ class ItensMesa extends Model
 
     public function produto()
     {
-        return $this->belongsTo('App\Produto', 'idProduto');
+        return $this->hasMany('App\Produto', 'idProduto');
+    }
+
+
+
+    public function mesa()
+    {
+        return $this->belongsTo('App\Mesa', 'idMesa');
     }
 
 

@@ -18,6 +18,7 @@ class Mesas extends Migration
             $table->integer('Status_mesa');
             $table->double('Preco_total');
             $table->integer('Numero_mesa');
+            $table->boolean('Fechada');
             $table->integer('Tipo_pagamento');
             $table->timestamps();
         });

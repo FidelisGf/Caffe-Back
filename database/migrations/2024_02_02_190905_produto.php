@@ -19,6 +19,7 @@ class Produto extends Migration
             $table->double('Preco_compra');
             $table->double('Preco_venda');
             $table->string('Descricao');
+            $table->binary('Imagem');
             $table->timestamps();
         });
     }

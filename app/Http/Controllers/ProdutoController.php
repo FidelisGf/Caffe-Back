@@ -9,41 +9,106 @@ class ProdutoController extends Controller
 {
 
     /**
+     * @OA\Get(
+     *     path="/api/produtos",
+     *     summary="Listar produtos",
+     *     tags={"Produtos"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Número da página (opcional)",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna a lista de produtos"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro interno do servidor"
+     *     )
+     * ),
+     * @OA\Get(
+     *     path="/api/produtos/{id}",
+     *     summary="Mostrar detalhes do produto",
+     *     tags={"Produtos"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID do produto",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna os detalhes do produto"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Produto não encontrado"
+     *     )
+     * ),
      * @OA\Post(
-     *     path="/api/produto",
-     *     summary="Register product",
+     *     path="/api/produtos",
+     *     summary="Adicionar produto",
+     *     tags={"Produtos"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Informações do novo produto",
+     *         @OA\JsonContent(
+     *             required={"Nome_produto", "Preco_compra", "Preco_venda", "Descricao"},
+     *             @OA\Property(property="Nome_produto", type="string"),
+     *             @OA\Property(property="Preco_compra", type="number", format="double"),
+     *             @OA\Property(property="Preco_venda", type="number", format="double"),
+     *             @OA\Property(property="Descricao", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Produto adicionado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro interno do servidor"
+     *     )
+     * ),
+     * @OA\Put(
+     *     path="/api/produtos/{id}",
+     *     summary="Atualizar produto",
+     *     tags={"Produtos"},
      *     @OA\Parameter(
-     *         name="Nome_produto",
-     *         in="query",
-     *         description="Nome_produto",
+     *         name="id",
+     *         in="path",
+     *         description="ID do produto a ser atualizado",
      *         required=true,
-     *         @OA\Schema(type="string")
+     *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Parameter(
-     *         name="Preco_compra",
-     *         in="query",
-     *         description="preco compra",
+     *     @OA\RequestBody(
      *         required=true,
-     *         @OA\Schema(type="double")
+     *         description="Informações do produto a serem atualizadas",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="Nome_produto", type="string"),
+     *             @OA\Property(property="Preco_compra", type="number", format="double"),
+     *             @OA\Property(property="Preco_venda", type="number", format="double"),
+     *             @OA\Property(property="Descricao", type="string")
+     *         )
      *     ),
-     *     @OA\Parameter(
-     *         name="Preco_venda",
-     *         in="query",
-     *         description="preco venda",
-     *         required=true,
-     *         @OA\Schema(type="double")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Produto atualizado com sucesso"
      *     ),
-     *      @OA\Parameter(
-     *         name="Descricao",
-     *         in="query",
-     *         description="Descrição",
-     *         required=true,
-     *         @OA\Schema(type="string ")
+     *     @OA\Response(
+     *         response=404,
+     *         description="Produto não encontrado"
      *     ),
-     *     @OA\Response(response="201", description="Produto criado"),
-     *     @OA\Response(response="422", description="Validation errors")
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro interno do servidor"
+     *     )
      * )
      */
+
     public function index(Request $request)
     {
         try {
@@ -75,17 +140,12 @@ class ProdutoController extends Controller
     {
         try {
             $data = $request->all();
-
-            $produto = Produto::find($id);
-            if ($produto) {
-                $produto->fill($data);
-                $produto->save();
-
-                return response()->json(['data' => $produto], 200);
-            }
-            return response()->json(['error' => 'Produto não encontrado'], 404);
+            $produto = Produto::findOrFail($id);
+            $produto->fill($data);
+            $produto->save();
+            return response()->json(['data' => $produto], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], $e->getCode());
         }
     }
 

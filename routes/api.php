@@ -19,5 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::resource('produto', 'ProdutoController')->except(['update']);
-Route::put('produto/{id}', 'ProdutoController@update');
+Route::resource('produtos', 'ProdutoController');
+Route::resource('entrada-produto', 'EntradaProdutoController');
+Route::resource('mesas', 'MesaController');
+Route::resource('itens-mesa', 'ItensMesaController');
+Route::patch('mesas/{id}/abrir-fechar', 'MesaController@openCloseMesa');
+

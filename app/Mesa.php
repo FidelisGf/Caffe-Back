@@ -10,4 +10,10 @@ class Mesa extends Model
     protected $primaryKey = 'idMesa';
     protected $fillable = ['Status_mesa', 'Preco_total', 'Numero_mesa', 'Tipo_pagamento'];
     public $timestamps = true;
+
+
+    public function itensMesa()
+    {
+        return $this->hasMany('App\ItensMesa', 'idMesa', 'idMesa');
+    }
 }
