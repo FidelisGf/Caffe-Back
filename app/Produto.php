@@ -13,7 +13,7 @@ class Produto extends Model
 
     public function entradaProduto()
     {
-        return $this->hasOne('App\EntradaProduto', 'idProduto', 'idProduto');
+        return $this->hasMany('App\EntradaProduto', 'idProduto', 'idProduto');
     }
 
     public function itensMesa()

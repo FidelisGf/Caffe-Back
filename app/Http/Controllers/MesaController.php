@@ -227,7 +227,7 @@ class MesaController extends Controller
             }
             return response()->json($mesa, 201);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getCode());
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 }

@@ -19,6 +19,7 @@ class ProdutoSeeder extends Seeder
                 'Preco_compra' => rand(10, 50), // Valor aleatório entre 10 e 50
                 'Preco_venda' => rand(60, 100), // Valor aleatório entre 60 e 100
                 'Descricao' => 'Descrição do Produto ' . $i,
+                'Imagem' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

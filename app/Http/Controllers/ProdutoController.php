@@ -162,4 +162,15 @@ class ProdutoController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            $produto = Produto::findOrFail($id);
+            $produto->delete();
+            return response()->json("Produto [$id] deletado!", 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], $e->getCode());
+        }
+    }
 }
