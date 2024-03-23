@@ -11,6 +11,14 @@ class Pedido extends Model
     protected $fillable = ['idMesa', 'Data', 'Valor_total', 'Forma_pagamento', 'Obs'];
 
 
+    public $formasdePagamento = [
+        0 => 'Dinheiro',
+        1 => 'Cartão de Crédito',
+        2 => 'Cartão de Débito',
+        3 => 'Pix',
+    ];
+
+
     public function mesa()
     {
         return $this->belongsTo('App\Mesa', 'idMesa', 'idMesa');

@@ -61,7 +61,8 @@ class ProdutoController extends Controller
      *             @OA\Property(property="Nome_produto", type="string"),
      *             @OA\Property(property="Preco_compra", type="number", format="double"),
      *             @OA\Property(property="Preco_venda", type="number", format="double"),
-     *             @OA\Property(property="Descricao", type="string")
+     *             @OA\Property(property="Descricao", type="string"),
+     *             @OA\Property(property="idCategoria", type="integer"),
      *         )
      *     ),
      *     @OA\Response(
@@ -113,8 +114,10 @@ class ProdutoController extends Controller
     {
         try {
             $current_page = $request->input('page', 1);
-            $produtos = Produto::paginate(40, ['*'], 'page', $current_page)
+            $produtos = Produto::with('categorias')
+                ->paginate(40)
                 ->toArray();
+
             return response()->json($produtos, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -125,10 +128,13 @@ class ProdutoController extends Controller
     public function show($id)
     {
         try {
-            $produto = Produto::find($id);
+            $produto = Produto::with('categorias')
+                ->findOrFail($id);
+
             if ($produto) {
                 return response()->json(['data' => $produto], 200);
             }
+
             return response()->json(['error' => 'Produto não encontrado'], 404);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

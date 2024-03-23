@@ -576,6 +576,9 @@
                                     },
                                     "Descricao": {
                                         "type": "string"
+                                    },
+                                    "idCategoria": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"

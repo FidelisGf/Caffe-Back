@@ -8,7 +8,7 @@ class Produto extends Model
 {
     protected $table = 'Produto';
     protected $primaryKey = 'idProduto';
-    protected $fillable = ['Nome_produto', 'Preco_compra', 'Preco_venda', 'Descricao', 'Imagem'];
+    protected $fillable = ['Nome_produto', 'Preco_lojista', 'Preco_compra', 'Preco_venda', 'Descricao', 'Imagem', 'idCategoria'];
     public $timestamps = true;
 
     public function entradaProduto()
@@ -29,5 +29,10 @@ class Produto extends Model
     public function getImagemAttribute($value)
     {
         return json_decode($value, true);
+    }
+
+    public function categorias()
+    {
+        return $this->belongsTo('App\Categorias', 'idCategoria');
     }
 }

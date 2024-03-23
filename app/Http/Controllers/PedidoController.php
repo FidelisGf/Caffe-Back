@@ -38,6 +38,7 @@ class PedidoController extends Controller
             $data = $request->all();
             $pedido = Pedido::findOrFail($id);
             $pedido->fill($data);
+            $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
             return response()->json($pedido, 200);
         } catch (\Exception $e) {
@@ -51,6 +52,7 @@ class PedidoController extends Controller
             $data = $request->all();
             $pedido = new Pedido();
             $pedido->fill($data);
+            $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
             return response()->json($pedido, 201);
         } catch (\Exception $e) {
