@@ -59,4 +59,18 @@ class PedidoController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            $pedido = Pedido::find($id);
+            if ($pedido) {
+                $pedido->delete();
+                return response()->json(['data' => 'Pedido removido com sucesso'], 200);
+            }
+            return response()->json(['error' => 'Pedido não encontrado'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

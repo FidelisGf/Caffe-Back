@@ -58,4 +58,18 @@ class CategoriasController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            $categoria = Categorias::find($id);
+            if ($categoria) {
+                $categoria->delete();
+                return response()->json(['data' => 'Categoria removida com sucesso'], 200);
+            }
+            return response()->json(['error' => 'Categoria não encontrada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
