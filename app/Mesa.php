@@ -17,8 +17,5 @@ class Mesa extends Model
         return $this->hasMany('App\ItensMesa', 'idMesa', 'idMesa');
     }
 
-    public function pedidos()
-    {
-        return $this->hasOne('App\Pedido', 'idMesa', 'idMesa');
-    }
+   
 }

@@ -15,7 +15,6 @@ class Pedidos extends Migration
     {
         Schema::create('Pedidos', function (Blueprint $table) {
             $table->id('idPedido');
-            $table->integer('idMesa');
             $table->date('Data');
             $table->integer('Valor_total');
             $table->string('Forma_pagamento');

@@ -41,8 +41,10 @@ class PedidoController extends Controller
             $pedido->fill($data);
             $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
+            $pedido = $pedido->fresh();
             $pedido->itensPedidos()->delete();
             foreach ($itens as $item) {
+                $item['idPedido'] = $pedido->idPedido;
                 $pedido->itensPedidos()->create($item);
             }
             return response()->json($pedido, 200);
@@ -55,12 +57,16 @@ class PedidoController extends Controller
     {
         try {
             $data = $request->pedido;
+           
             $itens = $request->itens;
             $pedido = new Pedido();
             $pedido->fill($data);
             $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
+            $pedido = $pedido->fresh();
+           
             foreach ($itens as $item) {
+                $item['idPedido'] = $pedido->idPedido;
                 $pedido->itensPedidos()->create($item);
             }
             return response()->json($pedido, 201);

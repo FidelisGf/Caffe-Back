@@ -19,10 +19,7 @@ class Pedido extends Model
     ];
 
 
-    public function mesa()
-    {
-        return $this->belongsTo('App\Mesa', 'idMesa', 'idMesa');
-    }
+ 
 
 
     public function itensPedidos()
