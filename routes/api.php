@@ -24,5 +24,6 @@ Route::resource('entrada-produto', 'EntradaProdutoController');
 Route::resource('mesas', 'MesaController');
 Route::resource('itens-mesa', 'ItensMesaController');
 Route::resource('categorias', 'CategoriasController');
+Route::resource('pedidos', 'PedidoController');
 Route::patch('mesas/{id}/abrir-fechar', 'MesaController@openCloseMesa');
 
