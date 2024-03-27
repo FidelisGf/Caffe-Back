@@ -23,4 +23,10 @@ class Pedido extends Model
     {
         return $this->belongsTo('App\Mesa', 'idMesa', 'idMesa');
     }
+
+
+    public function itensPedidos()
+    {
+        return $this->hasMany('App\Itens_pedidos', 'idPedido', 'idPedido');
+    }
 }

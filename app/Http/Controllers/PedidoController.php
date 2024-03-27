@@ -35,11 +35,16 @@ class PedidoController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $data = $request->all();
+            $data = $request->pedido;
+            $itens = $request->itens;
             $pedido = Pedido::findOrFail($id);
             $pedido->fill($data);
             $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
+            $pedido->itensPedidos()->delete();
+            foreach ($itens as $item) {
+                $pedido->itensPedidos()->create($item);
+            }
             return response()->json($pedido, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode());
@@ -49,11 +54,15 @@ class PedidoController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = $request->all();
+            $data = $request->pedido;
+            $itens = $request->itens;
             $pedido = new Pedido();
             $pedido->fill($data);
             $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
+            foreach ($itens as $item) {
+                $pedido->itensPedidos()->create($item);
+            }
             return response()->json($pedido, 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
