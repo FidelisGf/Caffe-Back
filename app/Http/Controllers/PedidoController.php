@@ -19,6 +19,21 @@ class PedidoController extends Controller
         }
     }
 
+
+    public function getItemsFromPedido($id)
+    {
+        try {
+            $pedido = Pedido::findOrFail($id);
+            if ($pedido) {
+                $itens = $pedido->itensPedidos;
+                return response()->json($itens, 200);
+            }
+            return response()->json(['error' => 'Pedido não encontrado'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function show($id)
     {
         try {
@@ -57,14 +72,14 @@ class PedidoController extends Controller
     {
         try {
             $data = $request->pedido;
-           
+
             $itens = $request->itens;
             $pedido = new Pedido();
             $pedido->fill($data);
             $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
             $pedido = $pedido->fresh();
-           
+
             foreach ($itens as $item) {
                 $item['idPedido'] = $pedido->idPedido;
                 $pedido->itensPedidos()->create($item);
