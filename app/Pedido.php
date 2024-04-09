@@ -8,7 +8,7 @@ class Pedido extends Model
 {
     protected $table = 'pedidos';
     protected $primaryKey = 'idPedido';
-    protected $fillable = ['idMesa', 'Data', 'Valor_total', 'Forma_pagamento', 'Obs'];
+    protected $fillable = ['Data', 'Valor_total', 'Forma_pagamento', 'Obs'];
 
 
     public $formasdePagamento = [

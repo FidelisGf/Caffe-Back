@@ -22,6 +22,21 @@ class PedidoController extends Controller
         }
     }
 
+
+    public function getItemsFromPedido($id)
+    {
+        try {
+            $pedido = Pedido::findOrFail($id);
+            if ($pedido) {
+                $itens = $pedido->itensPedidos;
+                return response()->json($itens, 200);
+            }
+            return response()->json(['error' => 'Pedido não encontrado'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function show($id)
     {
         try {

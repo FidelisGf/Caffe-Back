@@ -29,4 +29,5 @@ Route::get('pedidos/{id}', 'PedidoController@show');
 Route::get('pedidos/relatorio/get', 'PedidoController@getRelatorioDePedidos');
 Route::resource('estoque', 'EstoqueController');
 Route::patch('mesas/{id}/abrir-fechar', 'MesaController@openCloseMesa');
+Route::get('pedidos/{id}/itens', 'PedidoController@getItemsFromPedido');
 
