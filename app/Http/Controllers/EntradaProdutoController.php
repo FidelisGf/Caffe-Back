@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EntradaProduto;
+use App\Estoque;
 use Illuminate\Http\Request;
 
 class EntradaProdutoController extends Controller
@@ -129,14 +130,25 @@ class EntradaProdutoController extends Controller
     public function store(Request $request)
     {
         try {
+
             $entradaProduto = new EntradaProduto();
             $entradaProduto->idProduto = $request->idProduto;
             $entradaProduto->Quantidade = $request->Quantidade;
-            $entradaProduto->Preco = $request->Preco;
             $entradaProduto->Data = $request->Data;
+            $entradaProduto->Fornecedor = $request->Fornecedor ?? "Nada consta";
             $entradaProduto->Validade = $request->Validade;
             $entradaProduto->Informacoes_adicionais = $request->Informacoes_adicionais;
             $entradaProduto->save();
+            $quantidade = $request->Quantidade;
+            $lastEstoque = Estoque::where('idProduto', $request->idProduto)->orderBy('data', 'desc')->first();
+            if ($lastEstoque) {
+                $quantidade += $lastEstoque->quantidade;
+            }
+            Estoque::create([
+                'idProduto' => $request->idProduto,
+                'quantidade' => $quantidade,
+                'data' => $request->Data
+            ]);
             return response()->json(['message' => 'Entrada de produto cadastrada com sucesso'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao cadastrar entrada de produto', 'error' => $e], 400);

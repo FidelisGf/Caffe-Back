@@ -24,6 +24,9 @@ Route::resource('entrada-produto', 'EntradaProdutoController');
 Route::resource('mesas', 'MesaController');
 Route::resource('itens-mesa', 'ItensMesaController');
 Route::resource('categorias', 'CategoriasController');
-Route::resource('pedidos', 'PedidoController');
+Route::resource('pedidos', 'PedidoController')->except(['show']);
+Route::get('pedidos/{id}', 'PedidoController@show');
+Route::get('pedidos/relatorio/get', 'PedidoController@getRelatorioDePedidos');
+Route::resource('estoque', 'EstoqueController');
 Route::patch('mesas/{id}/abrir-fechar', 'MesaController@openCloseMesa');
 

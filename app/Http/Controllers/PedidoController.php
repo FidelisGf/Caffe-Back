@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Estoque;
 use App\Pedido;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -56,21 +59,34 @@ class PedidoController extends Controller
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction();
             $data = $request->pedido;
-           
+
             $itens = $request->itens;
             $pedido = new Pedido();
             $pedido->fill($data);
             $pedido->Forma_pagamento = $pedido->formasdePagamento[$pedido->Forma_pagamento];
             $pedido->save();
             $pedido = $pedido->fresh();
-           
+
             foreach ($itens as $item) {
                 $item['idPedido'] = $pedido->idPedido;
                 $pedido->itensPedidos()->create($item);
+                try {
+                    $estoque = Estoque::where('idProduto', $item['idProduto'])
+                        ->orderBy('data', 'desc')
+                        ->firstOrFail();
+                    $estoque->quantidade -= $item['Quantidade'];
+                    $estoque->data = $pedido->Data;
+                    $estoque->save();
+                } catch (\Exception $e) {
+                    throw new \Exception('Produto não encontrado no estoque', 404);
+                }
             }
+            DB::commit();
             return response()->json($pedido, 201);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -87,5 +103,18 @@ class PedidoController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function getRelatorioDePedidos(Request $request)
+    {
+        $initDate = Carbon::parse($request->input('initDate'))->format('Y-m-d');
+        $endDate = Carbon::parse($request->input('endDate'))->format('Y-m-d');
+        $filterByFormaPagamento = $request->input('filterByFormaPagamento');
+        $pedidosOrderByData = Pedido::whereBetween('Data', [$initDate, $endDate])
+            ->orderBy('Data', 'asc')
+            ->selectRaw("Data, SUM(Valor_total) as Valor_total, COUNT(idPedido) as Quantidade_pedidos, Forma_pagamento")
+            ->groupByRaw("Data, Forma_pagamento")
+            ->get();
+        return response()->json($pedidosOrderByData, 200);
     }
 }

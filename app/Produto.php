@@ -35,4 +35,9 @@ class Produto extends Model
     {
         return $this->belongsTo('App\Categorias', 'idCategoria');
     }
+
+    public function estoque()
+    {
+        return $this->hasMany('App\Estoque', 'idProduto', 'idProduto');
+    }
 }
