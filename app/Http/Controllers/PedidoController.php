@@ -87,15 +87,13 @@ class PedidoController extends Controller
             foreach ($itens as $item) {
                 $item['idPedido'] = $pedido->idPedido;
                 $pedido->itensPedidos()->create($item);
-                try {
-                    $estoque = Estoque::where('idProduto', $item['idProduto'])
-                        ->orderBy('data', 'desc')
-                        ->firstOrFail();
+                $estoque = Estoque::where('idProduto', $item['idProduto'])
+                    ->orderBy('data', 'desc')
+                    ->first();
+                if ($estoque) {
                     $estoque->quantidade -= $item['Quantidade'];
                     $estoque->data = $pedido->Data;
                     $estoque->save();
-                } catch (\Exception $e) {
-                    throw new \Exception('Produto não encontrado no estoque', 404);
                 }
             }
             DB::commit();
